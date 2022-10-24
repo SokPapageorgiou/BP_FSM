@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using AI.FSM.Interfaces;
 using AI.FSM.Interfaces.State;
 
 namespace AI.FSM
 {
-    public class StateMachine
+    public class StateMachine : IStateMachine
     {
         private IState _currentState;
         private readonly List<IActionFixedUpdate> _mainActions = new ();
