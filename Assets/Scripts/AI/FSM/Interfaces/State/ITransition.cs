@@ -1,4 +1,6 @@
-﻿namespace AI.FSM.Interfaces.State
+﻿using System;
+
+namespace AI.FSM.Interfaces.State
 {
     public interface ITransition
     {
@@ -8,6 +10,6 @@
         /// <returns></returns>
         public IActions Actions();
 
-        public bool IsCompleted { get; set; }
+        public Action OnTransitionEnds { get; set; }
     }
 }

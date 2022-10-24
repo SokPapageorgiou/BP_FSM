@@ -6,33 +6,49 @@ namespace AI.FSM
     public class StateMachine
     {
         private IState _currentState;
-        private readonly Queue<IActionFixedUpdate> _actionsFixedUpdate = new ();
+        private readonly List<IActionFixedUpdate> _mainActions = new ();
+        private readonly List<IActionFixedUpdate> _exitEnterActions = new();
 
         public StateMachine(IState startState) => _currentState = startState;
-        
+            
         public void ChangeState(IState nextState)
         {
-            AddToActionsFixedUpdate(_currentState.ExitActions());
+            AddToActionList(_exitEnterActions, _currentState.ExitActions());
             
             _currentState = nextState;
-            AddToActionsFixedUpdate(_currentState.EntryActions());
+            AddToActionList(_exitEnterActions, _currentState.EntryActions());
             
-            _currentState.Transition().IsCompleted = false;
+            _mainActions.Clear();
+            AddToActionList(_mainActions, _currentState.Transition().Actions());
+            _currentState.Transition().OnTransitionEnds += SwitchToMainActions;
         }
 
         public void ExecuteFixedUpdate()
         {
-            AddToActionsFixedUpdate(!_currentState.Transition().IsCompleted
-                ? _currentState.Transition().Actions()
-                : _currentState.Actions());
-
-            while(_actionsFixedUpdate.Count != 0) _actionsFixedUpdate.Dequeue().Run();
+            if (_exitEnterActions.Count > 0)
+            {
+                RunActions(_exitEnterActions);
+                _exitEnterActions.Clear();
+            }
+            
+            RunActions(_mainActions);
         }
 
-        private void AddToActionsFixedUpdate(IActions actionsToAdd)
+        private void RunActions(List<IActionFixedUpdate> list)
+        {
+            foreach (var action in list) action.Run();
+        }
+
+        private void AddToActionList(List<IActionFixedUpdate> list, IActions actionsToAdd)
         {
             foreach (var action in actionsToAdd.List())
-                _actionsFixedUpdate.Enqueue(action);
+                list.Add(action);
+        }
+
+        private void SwitchToMainActions()
+        {
+            _mainActions.Clear();
+            AddToActionList(_mainActions, _currentState.Actions());
         }
     }
 }
