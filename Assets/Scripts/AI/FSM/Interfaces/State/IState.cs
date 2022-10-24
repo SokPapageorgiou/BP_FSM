@@ -3,7 +3,7 @@
     public interface IState
     {
         /// <summary>
-        /// Entry Actions will run once
+        /// List of Actions to prepare the State. Entry Actions will run once.
         /// </summary>
         /// <returns></returns>
         public IActions EntryActions();
@@ -15,7 +15,7 @@
         public IActions Actions();
         
         /// <summary>
-        /// Exit Actions will run once
+        /// List of action to end the State. Exit Actions will run once
         /// </summary>
         /// <returns></returns>
         public IActions ExitActions();

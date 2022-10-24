@@ -2,7 +2,12 @@
 {
     public interface ITransition
     {
+        /// <summary>
+        /// List of actions in the Transition.
+        /// </summary>
+        /// <returns></returns>
         public IActions Actions();
-        public bool IsCompleted();
+
+        public bool IsCompleted { get; set; }
     }
 }
