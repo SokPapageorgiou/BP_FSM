@@ -4,6 +4,6 @@ namespace AI.FSM.Interfaces.State
 {
     public interface IActions
     {
-        public List<IActionFixedUpdate> List();
+        public List<IActionFixedUpdate> List { get; }
     }
 }

@@ -6,24 +6,24 @@
         /// List of Actions to prepare the State. Entry Actions will run once.
         /// </summary>
         /// <returns></returns>
-        public IActions EntryActions();
+        public IActions EntryActions{ get; }
         
         /// <summary>
         /// Actions will run every single FixedUpdate
         /// </summary>
         /// <returns></returns>
-        public IActions Actions();
+        public IActions Actions{ get; }
         
         /// <summary>
         /// List of action to end the State. Exit Actions will run once
         /// </summary>
         /// <returns></returns>
-        public IActions ExitActions();
+        public IActions ExitActions{ get; }
         
         /// <summary>
         /// Transition Actions will run every FixedUpdate until Transition is Completed
         /// </summary>
         /// <returns></returns>
-        public ITransition Transition();
+        public ITransition Transition{ get; }
     }
 }
