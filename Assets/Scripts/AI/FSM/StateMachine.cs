@@ -14,14 +14,14 @@ namespace AI.FSM
             
         public void ChangeState(IState nextState)
         {
-            AddToActionList(_exitEnterActions, _currentState.ExitActions());
+            AddToActionList(_exitEnterActions, _currentState.ExitActions);
             
             _currentState = nextState;
-            AddToActionList(_exitEnterActions, _currentState.EntryActions());
+            AddToActionList(_exitEnterActions, _currentState.EntryActions);
             
             _mainActions.Clear();
-            AddToActionList(_mainActions, _currentState.Transition().Actions());
-            _currentState.Transition().OnTransitionEnds += SwitchToMainActions;
+            AddToActionList(_mainActions, _currentState.Transition.Actions);
+            _currentState.Transition.OnTransitionEnds += SwitchToMainActions;
         }
 
         public void ExecuteFixedUpdate()
@@ -42,14 +42,14 @@ namespace AI.FSM
 
         private void AddToActionList(List<IActionFixedUpdate> list, IActions actionsToAdd)
         {
-            foreach (var action in actionsToAdd.List())
+            foreach (var action in actionsToAdd.List)
                 list.Add(action);
         }
 
         private void SwitchToMainActions()
         {
             _mainActions.Clear();
-            AddToActionList(_mainActions, _currentState.Actions());
+            AddToActionList(_mainActions, _currentState.Actions);
         }
     }
 }
